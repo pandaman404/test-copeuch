@@ -13,7 +13,7 @@ export const TodoList = () => {
             Id
           </TableHeaderCell>
           <TableHeaderCell className='text-tremor-content-strong dark:text-dark-tremor-content-strong'>
-            Tareas
+            {`Tareas (${tasks.length})`}
           </TableHeaderCell>
           <TableHeaderCell className='text-tremor-content-strong dark:text-dark-tremor-content-strong'>
             Vigente
