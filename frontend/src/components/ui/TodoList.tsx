@@ -1,17 +1,17 @@
-import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@tremor/react';
-import { PencilSquareIcon } from '../icons/PencilSquareIcon';
-import { TrashIcon } from '../icons/TrashIcon';
-import { useAppSelector } from '../../hooks/store';
-import { useTaskActions } from '../../layout/useTaskActions';
+import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react';
+import { AppDispatch, RootState } from '../../state/store';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getAllTasks } from '../../api/task';
+import { getTasksAsync } from '../../state/task/taskSlice';
+import { useAppSelector } from '../../state/hooks/useAppSelector';
+import { TodoRow } from './TodoRow';
 
 export const TodoList = () => {
-  const tasks = useAppSelector((state) => state.tasks);
-  const { deleteTask } = useTaskActions();
+  const { tasks } = useAppSelector((state: RootState) => state.task);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    getAllTasks();
+    dispatch(getTasksAsync());
   }, []);
 
   return (
@@ -33,24 +33,8 @@ export const TodoList = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {tasks.map((item) => (
-          <TableRow key={item.id}>
-            <TableCell className='font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong'>
-              {item.id}
-            </TableCell>
-            <TableCell className='font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong'>
-              {item.description}
-            </TableCell>
-            <TableCell>{item.current ? 'true' : 'false'}</TableCell>
-            <TableCell className='flex gap-2 justify-center'>
-              <button onClick={() => console.log(item.id)}>
-                <PencilSquareIcon />
-              </button>
-              <button onClick={() => deleteTask(item.id)}>
-                <TrashIcon />
-              </button>
-            </TableCell>
-          </TableRow>
+        {tasks.map((task) => (
+          <TodoRow key={task.id} task={task} />
         ))}
       </TableBody>
     </Table>

@@ -1,15 +1,17 @@
-// import { createTask, deleteTask, updateTask } from '../../api/task';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../state/store';
+import { createTaskAsync } from '../../state/task/taskSlice';
 
 export const NewTaskForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     const newTask = formData.get('newTask') as string;
-    console.log(newTask);
-    // const jio = { description: newTask, current: true };
-    // createTask({ description: newTask, current: true });
-    // updateTask(3, jio);
-    // deleteTask(3);
+    if (newTask.trim().length > 0) {
+      dispatch(createTaskAsync(newTask.trim()));
+    }
   };
 
   return (

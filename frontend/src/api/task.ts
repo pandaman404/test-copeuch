@@ -1,4 +1,3 @@
-import type { ApiResponse } from '../@types/Api';
 import type { Task, TaskId } from '../@types/Task';
 
 const baseUrl = 'http://localhost:8080/api/v1';
@@ -12,15 +11,18 @@ export const getAllTasks = async () => {
       },
     });
 
-    const data: ApiResponse = await response.json();
-    console.log(data);
+    const json = await response.json();
+
+    return json.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const createTask = async (newTask: Partial<Task>) => {
+export const createTask = async (description: string) => {
   try {
+    const newTask = { description, current: true };
+
     const response = await fetch(`${baseUrl}/task`, {
       method: 'POST',
       headers: {
@@ -29,16 +31,18 @@ export const createTask = async (newTask: Partial<Task>) => {
       body: JSON.stringify(newTask),
     });
 
-    const data: ApiResponse = await response.json();
-    console.log(data);
+    const json = await response.json();
+
+    return json.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateTask = async (taskId: TaskId, updatedTask: Partial<Task>) => {
+export const updateTask = async (updatedTask: Partial<Task>) => {
   try {
-    const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
+    const { id } = updatedTask;
+    const response = await fetch(`${baseUrl}/tasks/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -46,8 +50,8 @@ export const updateTask = async (taskId: TaskId, updatedTask: Partial<Task>) => 
       body: JSON.stringify(updatedTask),
     });
 
-    const data: ApiResponse = await response.json();
-    console.log(data);
+    const json = await response.json();
+    return json.data;
   } catch (error) {
     console.log(error);
   }
@@ -62,8 +66,8 @@ export const deleteTask = async (taskId: TaskId) => {
       },
     });
 
-    const data: ApiResponse = await response.json();
-    console.log(data);
+    const json = await response.json();
+    return json.message;
   } catch (error) {
     console.log(error);
   }

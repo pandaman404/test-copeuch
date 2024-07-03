@@ -1,7 +1,15 @@
-import { Task } from './Task';
+import type { Task } from './Task';
 
-export interface ApiResponse {
+interface ApiResponse<T> {
   status: number;
   message?: string;
-  data?: Task | Task[];
+  data?: T;
+}
+
+export interface ApiTaskResponse extends ApiResponse<Task> {}
+
+export interface ApiTaskListResponse extends ApiResponse<Task[]> {}
+
+export interface ApiMessageResponse extends ApiResponse<null> {
+  message: string;
 }
