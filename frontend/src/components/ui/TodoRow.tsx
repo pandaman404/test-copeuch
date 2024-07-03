@@ -2,12 +2,9 @@ import type { Task } from '../../@types/Task';
 import { TableCell, TableRow } from '@tremor/react';
 import { PencilSquareIcon } from '../icons/PencilSquareIcon';
 import { TrashIcon } from '../icons/TrashIcon';
-import { AppDispatch } from '../../state/store';
-import { useDispatch } from 'react-redux';
-import { deleteTaskAsync } from '../../state/task/taskSlice';
-import { useEditTask } from '../../hooks/useEditTask';
 import { ConfirmIcon } from '../icons/ConfirmIcon';
 import { CancelIcon } from '../icons/CancelIcon';
+import { useRowTask } from '../../hooks/useRowTask';
 
 interface TodoRowProps {
   task: Task;
@@ -23,9 +20,8 @@ export const TodoRow = ({ task }: TodoRowProps) => {
     handleCurrentChange,
     handleDescriptionChange,
     handleSubmit,
-  } = useEditTask(id, description, current);
-
-  const dispatch = useDispatch<AppDispatch>();
+    handleDeleteTask,
+  } = useRowTask(id, description, current);
 
   return (
     <TableRow>
@@ -69,7 +65,7 @@ export const TodoRow = ({ task }: TodoRowProps) => {
             <button onClick={handleIsEditing}>
               <PencilSquareIcon />
             </button>
-            <button onClick={() => dispatch(deleteTaskAsync(id))}>
+            <button onClick={() => handleDeleteTask(id)}>
               <TrashIcon />
             </button>
           </>

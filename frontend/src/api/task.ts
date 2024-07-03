@@ -1,8 +1,9 @@
+import { ApiMessageResponse, ApiTaskListResponse, ApiTaskResponse } from '../@types/Api';
 import type { Task, TaskId } from '../@types/Task';
 
 const baseUrl = 'http://localhost:8080/api/v1';
 
-export const getAllTasks = async () => {
+export const getAllTasks = async (): Promise<Task[]> => {
   try {
     const response = await fetch(`${baseUrl}/tasks`, {
       method: 'GET',
@@ -11,15 +12,20 @@ export const getAllTasks = async () => {
       },
     });
 
-    const json = await response.json();
+    if (!response.ok) throw new Error('Error obteniendo lista de tareas');
 
-    return json.data;
+    const { data }: ApiTaskListResponse = await response.json();
+    return data;
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error('ups!');
+    }
   }
 };
 
-export const createTask = async (description: string) => {
+export const createTask = async (description: string): Promise<Task> => {
   try {
     const newTask = { description, current: true };
 
@@ -31,15 +37,20 @@ export const createTask = async (description: string) => {
       body: JSON.stringify(newTask),
     });
 
-    const json = await response.json();
+    if (!response.ok) throw new Error('Error creando tarea');
 
-    return json.data;
+    const { data }: ApiTaskResponse = await response.json();
+    return data;
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error('ups!');
+    }
   }
 };
 
-export const updateTask = async (updatedTask: Partial<Task>) => {
+export const updateTask = async (updatedTask: Partial<Task>): Promise<Task> => {
   try {
     const { id } = updatedTask;
     const response = await fetch(`${baseUrl}/tasks/${id}`, {
@@ -50,14 +61,20 @@ export const updateTask = async (updatedTask: Partial<Task>) => {
       body: JSON.stringify(updatedTask),
     });
 
-    const json = await response.json();
-    return json.data;
+    if (!response.ok) throw new Error('Error actualizando tarea');
+
+    const { data }: ApiTaskResponse = await response.json();
+    return data;
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error('ups!');
+    }
   }
 };
 
-export const deleteTask = async (taskId: TaskId) => {
+export const deleteTask = async (taskId: TaskId): Promise<string> => {
   try {
     const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
       method: 'DELETE',
@@ -66,9 +83,15 @@ export const deleteTask = async (taskId: TaskId) => {
       },
     });
 
-    const json = await response.json();
-    return json.message;
+    if (!response.ok) throw new Error('Error eliminando tarea');
+
+    const { message }: ApiMessageResponse = await response.json();
+    return message;
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error('ups!');
+    }
   }
 };

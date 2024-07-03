@@ -1,14 +1,12 @@
 import { type Task } from '../@types/Task';
 import { useState } from 'react';
-import { AppDispatch } from '../state/store';
-import { useDispatch } from 'react-redux';
-import { updateTaskAsync } from '../state/task/taskSlice';
+import { useTaskActions } from './useTaskActions';
 
-export function useEditTask(id: number, initialDescription: string, initialCurrent: boolean) {
+export function useRowTask(id: number, initialDescription: string, initialCurrent: boolean) {
+  const { handleUpdateTask, handleDeleteTask } = useTaskActions();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [updatedDescription, setUpdatedDescription] = useState<string>(initialDescription);
   const [updatedCurrent, setUpdatedCurrent] = useState<boolean>(initialCurrent);
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleIsEditing = (): void => {
     setIsEditing((prevState) => !prevState);
@@ -25,7 +23,7 @@ export function useEditTask(id: number, initialDescription: string, initialCurre
   const handleSubmit = () => {
     if (updatedDescription.trim() && updatedDescription.trim().length > 0 && typeof updatedCurrent === 'boolean') {
       const updatedTask: Partial<Task> = { id, description: updatedDescription.trim(), current: updatedCurrent };
-      dispatch(updateTaskAsync(updatedTask));
+      handleUpdateTask(updatedTask);
       handleIsEditing();
     }
   };
@@ -38,5 +36,6 @@ export function useEditTask(id: number, initialDescription: string, initialCurre
     updatedCurrent,
     handleCurrentChange,
     handleSubmit,
+    handleDeleteTask,
   };
 }

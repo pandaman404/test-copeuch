@@ -1,18 +1,9 @@
 import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react';
-import { AppDispatch, RootState } from '../../state/store';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { getTasksAsync } from '../../state/task/taskSlice';
-import { useAppSelector } from '../../state/hooks/useAppSelector';
 import { TodoRow } from './TodoRow';
+import { useTodoList } from '../../hooks/useTodoList';
 
 export const TodoList = () => {
-  const { tasks } = useAppSelector((state: RootState) => state.task);
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(getTasksAsync());
-  }, []);
+  const { tasks } = useTodoList();
 
   return (
     <Table className='mt-8 w-full'>

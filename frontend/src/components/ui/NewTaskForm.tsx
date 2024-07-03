@@ -1,16 +1,14 @@
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../state/store';
-import { createTaskAsync } from '../../state/task/taskSlice';
+import { useTaskActions } from '../../hooks/useTaskActions';
 
 export const NewTaskForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { handleCreateTask } = useTaskActions();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     const newTask = formData.get('newTask') as string;
     if (newTask.trim().length > 0) {
-      dispatch(createTaskAsync(newTask.trim()));
+      handleCreateTask(newTask.trim());
     }
   };
 
