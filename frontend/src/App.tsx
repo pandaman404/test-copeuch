@@ -1,5 +1,12 @@
+import { TodoList } from './components/ui/TodoList';
+import { MainLayout } from './layout/MainLayout';
+
 const App = () => {
-  return <div className='bg-red-500'>App</div>;
+  return (
+    <MainLayout>
+      <TodoList />
+    </MainLayout>
+  );
 };
 
 export default App;
