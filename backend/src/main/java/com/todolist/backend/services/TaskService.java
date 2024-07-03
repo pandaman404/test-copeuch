@@ -18,19 +18,22 @@ public class TaskService {
     private TaskRespository taskRespository;
 
     public ResponseEntity<Object> getTasks() {
-        var tasks = taskRespository.findAll();
-        return ResponseHandler.responseBuilder(HttpStatus.OK, null, tasks, tasks.size());
+
+            var tasks = taskRespository.findAll();
+            return ResponseHandler.responseBuilder(HttpStatus.OK, null, tasks, tasks.size());
+
     }
 
     public ResponseEntity<Object> createTask(Task newtask) {
         if(newtask.getDescription() == null || newtask.getDescription().isEmpty() || newtask.getCurrent() == null) {
-            return ResponseHandler.responseBuilder(HttpStatus.BAD_REQUEST, "Los campos 'description' y 'current' son requeridos",null, null);
+           return ResponseHandler.responseBuilder(HttpStatus.BAD_REQUEST, "Los campos 'description' y 'current' son requeridos",null, null);
         }
         var savedTask = taskRespository.save(newtask);
         return ResponseHandler.responseBuilder(HttpStatus.OK, null, savedTask, null);
     }
 
     public ResponseEntity<Object> updateTask(Long taskId, Task updatedtask) {
+
         if(updatedtask.getDescription() == null || updatedtask.getDescription().isEmpty() || updatedtask.getCurrent() == null) {
             return ResponseHandler.responseBuilder( HttpStatus.BAD_REQUEST, "Los campos 'description' y 'current' son requeridos",null, null);
         }
