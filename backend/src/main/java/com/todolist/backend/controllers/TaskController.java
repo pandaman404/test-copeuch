@@ -20,6 +20,10 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    /**
+     *  Listar tareas
+     * @return ResponseEntity<Object>
+     */
     @Operation(summary = "Listar tareas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "listar todas las tareas",
@@ -35,6 +39,11 @@ public class TaskController {
         return taskService.getTasks();
     }
 
+    /**
+     * Crear tarea
+     * @param task
+     * @return ResponseEntity<Object>
+     */
     @Operation(summary = "Crear nueva tarea")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarea creada exitosamente",
@@ -66,6 +75,12 @@ public class TaskController {
         return taskService.createTask(task);
     }
 
+    /**
+     * Actualizar tarea
+     * @param taskId
+     * @param updatedTask
+     * @return ResponseEntity<Object>
+     */
     @Operation(summary = "Actualizar tarea")
     @PutMapping(value="/tasks/{id}", consumes = { "application/json" }, produces = { "application/json" })
     @ApiResponses(value = {
@@ -91,7 +106,6 @@ public class TaskController {
                     )
             )
     })
-
     public ResponseEntity<Object> updateTask(
             @PathVariable("id") @Parameter(name = "id", description = "Task id", example = "1") Long taskId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -108,6 +122,11 @@ public class TaskController {
     }
 
 
+    /**
+     * Eliminar tarea
+     * @param taskId
+     * @return ResponseEntity<Object>
+     */
     @Operation(summary = "Eliminar tarea")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarea eliminada exitosamente",

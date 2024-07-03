@@ -18,6 +18,10 @@ public class TaskService {
     @Autowired
     private TaskRespository taskRespository;
 
+    /**
+     * Listar tareas
+     * @return ResponseEntity<Object>
+     */
     public ResponseEntity<Object> getTasks() {
         try {
             var tasks = taskRespository.findAll();
@@ -28,6 +32,11 @@ public class TaskService {
         }
     }
 
+    /**
+     * Crear tarea
+     * @param newtask
+     * @return ResponseEntity<Object>
+     */
     public ResponseEntity<Object> createTask(Task newtask) {
         try {
             if(newtask.getDescription() == null || newtask.getDescription().isEmpty() || newtask.getCurrent() == null) {
@@ -49,6 +58,12 @@ public class TaskService {
         }
     }
 
+    /**
+     * Actualizar tarea
+     * @param taskId
+     * @param updatedtask
+     * @return ResponseEntity<Object>
+     */
     public ResponseEntity<Object> updateTask(Long taskId, Task updatedtask) {
         try {
             if(updatedtask.getDescription() == null || updatedtask.getDescription().isEmpty() || updatedtask.getCurrent() == null) {
@@ -81,6 +96,11 @@ public class TaskService {
         }
     }
 
+    /**
+     * Eliminar tarea
+     * @param taskId
+     * @return ResponseEntity<Object>
+     */
     public ResponseEntity<Object> deleteTask(Long taskId) {
         try {
             Optional<Task> task = taskRespository.findById(taskId);
