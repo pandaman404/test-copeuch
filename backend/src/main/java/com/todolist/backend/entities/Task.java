@@ -2,11 +2,13 @@ package com.todolist.backend.entities;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@Data
 @Table(name = "tarea")
 public class Task {
 
@@ -26,38 +28,6 @@ public class Task {
     @Column(name = "vigente")
     @Schema(name = "current", example = "true", required = true)
     private Boolean current;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public Boolean getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Boolean current) {
-        this.current = current;
-    }
 
     @PrePersist
     protected void onCreate() {
