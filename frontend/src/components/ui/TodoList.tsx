@@ -12,7 +12,10 @@ export const TodoList = () => {
           <TableHeaderCell className='text-tremor-content-strong dark:text-dark-tremor-content-strong'>
             Id
           </TableHeaderCell>
-          <TableHeaderCell className='text-tremor-content-strong dark:text-dark-tremor-content-strong'>
+          <TableHeaderCell
+            className='text-tremor-content-strong dark:text-dark-tremor-content-strong'
+            data-testid='tasks-count'
+          >
             {`Tareas (${tasks.length})`}
           </TableHeaderCell>
           <TableHeaderCell className='text-tremor-content-strong dark:text-dark-tremor-content-strong'>
