@@ -1,7 +1,7 @@
 package com.todolist.backend.services;
 
 import com.todolist.backend.entities.Task;
-import com.todolist.backend.repositories.TaskRespository;
+import com.todolist.backend.repositories.TaskRepository;
 import com.todolist.backend.response.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -9,14 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TaskService {
 
     @Autowired
-    private TaskRespository taskRespository;
+    private TaskRepository taskRepository;
 
     /**
      * Listar tareas
@@ -24,7 +23,7 @@ public class TaskService {
      */
     public ResponseEntity<Object> getTasks() {
         try {
-            var tasks = taskRespository.findAll();
+            var tasks = taskRepository.findAll();
             return ResponseHandler.responseBuilder(HttpStatus.OK, null, tasks, tasks.size());
         } catch (Exception e) {
             System.out.println("Error en getTasks");
@@ -42,18 +41,20 @@ public class TaskService {
             if(newtask.getDescription() == null || newtask.getDescription().isEmpty() || newtask.getCurrent() == null) {
                 return ResponseHandler.responseBuilder(HttpStatus.BAD_REQUEST, "Los campos 'description' y 'current' son requeridos",null, null);
             }
-            var savedTask = taskRespository.save(newtask);
+
+            var savedTask = taskRepository.save(newtask);
             if(savedTask.getId() == null || savedTask.getId() <= 0) {
                 throw new RuntimeException("Error creando tarea");
             }
+
             return ResponseHandler.responseBuilder(HttpStatus.OK, null, savedTask, null);
         }
         catch (DataAccessException e) {
-            System.out.println("Error en createTask");
+            System.out.println("Error en createTask: " + e.getMessage());
             return ResponseHandler.responseBuilder(HttpStatus.INTERNAL_SERVER_ERROR, "Error creando tarea", null, null);
         }
         catch (Exception e) {
-            System.out.println("Error en createTask");
+            System.out.println("Error en createTask: " + e.getMessage());
             return ResponseHandler.responseBuilder(HttpStatus.INTERNAL_SERVER_ERROR, "Ups! ha ocurrido un error inesperado.", null, null);
         }
     }
@@ -69,13 +70,13 @@ public class TaskService {
             if(updatedtask.getDescription() == null || updatedtask.getDescription().isEmpty() || updatedtask.getCurrent() == null) {
                 return ResponseHandler.responseBuilder( HttpStatus.BAD_REQUEST, "Los campos 'description' y 'current' son requeridos",null, null);
             }
-            Optional<Task> task = taskRespository.findById(taskId);
+            Optional<Task> task = taskRepository.findById(taskId);
             if (task.isPresent()) {
                 Task foundedTask = task.get();
                 foundedTask.setDescription(updatedtask.getDescription());
                 foundedTask.setCurrent(updatedtask.getCurrent());
 
-                Task savedTask = taskRespository.save(foundedTask);
+                Task savedTask = taskRepository.save(foundedTask);
 
                 if(savedTask.getId() == null || savedTask.getId() <= 0) {
                     throw new RuntimeException("Error al actualizar la tarea");
@@ -103,9 +104,9 @@ public class TaskService {
      */
     public ResponseEntity<Object> deleteTask(Long taskId) {
         try {
-            Optional<Task> task = taskRespository.findById(taskId);
+            Optional<Task> task = taskRepository.findById(taskId);
             if (task.isPresent()) {
-                taskRespository.deleteById(taskId);
+                taskRepository.deleteById(taskId);
                 String message = String.format("Tarea con ID %d ha sido eliminada", taskId);
                 return ResponseHandler.responseBuilder(HttpStatus.OK, message, null, null);
             } else {

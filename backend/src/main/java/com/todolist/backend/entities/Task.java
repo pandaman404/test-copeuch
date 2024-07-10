@@ -2,13 +2,17 @@ package com.todolist.backend.entities;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tarea")
 public class Task {
 
@@ -32,5 +36,10 @@ public class Task {
     @PrePersist
     protected void onCreate() {
         created_at  = LocalDateTime.now();
+    }
+
+    public Task(String description, Boolean current) {
+        this.description = description;
+        this.current = current;
     }
 }

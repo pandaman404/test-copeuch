@@ -15,7 +15,6 @@ public class ResponseHandler {
     ) {
         Map<String, Object> response = new HashMap<>();
 
-
         if(message != null) {
             response.put("message", message);
         }
