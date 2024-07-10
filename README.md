@@ -18,4 +18,5 @@
 - Abrir proyecto en su IDE de preferencia
 - Instalar dependencias y correr aplicación de spring boot
 - La aplicación correrá en: `http://localhost:8080`
+- Los tests se encuentran al interior de la carpeta `backend/src/test`
 - Ir a documentación en Swagger: [http://localhost:8080/swagger-ui/index.html#/](http://localhost:8080/swagger-ui/index.html#/)
